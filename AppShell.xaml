@@ -8,9 +8,31 @@
     Shell.FlyoutBehavior="Flyout"
     Title="Encryptor_Application"
     >
-    <ShellContent
-    Title="Home"
-    ContentTemplate="{DataTemplate pages:MainPage }"
-    Route="MainPage" />
+    <FlyoutItem
+        Title="Home"
+        Route="EncryptorPage">
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate pages:MainPage }"
+            Route="MainPage" />
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Encryption"
+        Route="EncryptionPage">
+        <ShellContent
+            Title="Encryption"
+            ContentTemplate="{DataTemplate pages:EncryptionPage }"
+            Route="EncryptorPage" />
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="Decryption"
+        Route="DecryptionPage">
+        <ShellContent
+            Title="Decryption"
+            ContentTemplate="{DataTemplate pages:DecryptionPage }"
+            Route="DecryptionPage" />
+    </FlyoutItem>
 
 </Shell>

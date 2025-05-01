@@ -6,9 +6,8 @@
              x:DataType="viewModels:MainPageViewModel">
 
     <Grid>
-        <Image Source="dotnet_bot.jpg"
+        <Image Source="mango.jpg"
                Aspect="AspectFill"
-               Opacity="0.4"
             IsVisible="True" />
 
         <ScrollView>

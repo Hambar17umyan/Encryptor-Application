@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Encryptor_Application.Controls
 {
-    class BoldLabel : Label
+    public class BoldLabel : Label
     {
         public BoldLabel()
         {

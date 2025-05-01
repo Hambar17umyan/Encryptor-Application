@@ -2,11 +2,55 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Encryptor_Application.Pages.EncryptionPage"
-             Title="EncryptionPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:controls="clr-namespace:Encryptor_Application.Controls"
+             xmlns:viewModels = "clr-namespace:Encryptor_Application.ViewModels"
+             Title="EncryptionPage"
+             x:DataType="viewModels:EncryptionPageViewModel">
+    <Grid>
+        <Image Source="mango.jpg"
+           Aspect="AspectFill"
+        IsVisible="True" />
+
+        <ScrollView>
+            <VerticalStackLayout 
+                Padding="10"
+                Spacing="10">
+                <Border 
+                    StrokeThickness="10"
+                    Stroke="Green"
+                    BackgroundColor="LightGreen"
+                    Padding = "10"
+                    StrokeShape="RoundRectangle 12">
+
+                    <VerticalStackLayout
+                        HorizontalOptions = "Center"
+                        Padding = "30,0"
+                        Spacing = "25">
+
+
+                        <controls:BoldLabel 
+                            HorizontalTextAlignment="Center"
+                            Text="Choose file to encrypt!" 
+                            FontSize = "20"/>
+
+                        <HorizontalStackLayout 
+                            Padding = "30,0"
+                            Spacing = "25"
+                            HorizontalOptions="Center">
+
+                            <Button 
+                                BackgroundColor="Gray"
+                                Text = "Choose File"
+                                Command = "{Binding ChooseFileToEncryptCommand}"/>
+
+                            <Button 
+                                Text = "Submit"
+                                Command = "{Binding SubmitFileToEncryptCommand}"/>
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>
