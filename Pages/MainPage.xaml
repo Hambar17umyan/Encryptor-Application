@@ -1,0 +1,93 @@
+﻿  <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Encryptor_Application.ViewModels"  
+             xmlns:controls="clr-namespace:Encryptor_Application.Controls"
+             x:Class="Encryptor_Application.Pages.MainPage"
+             x:DataType="viewModels:MainPageViewModel">
+
+    <Grid>
+        <Image Source="dotnet_bot.jpg"
+               Aspect="AspectFill"
+               Opacity="0.4"
+            IsVisible="True" />
+
+        <ScrollView>
+            <VerticalStackLayout 
+            Padding="10"
+            Spacing="10">
+                <Border 
+                StrokeThickness="10"
+                Stroke="Green"
+                BackgroundColor="LightGreen"
+                Padding = "10"
+                StrokeShape="RoundRectangle 12">
+
+                    <VerticalStackLayout
+                    HorizontalOptions = "Center"
+                    Padding = "30,0"
+                    Spacing = "25">
+
+
+                        <controls:BoldLabel 
+                        HorizontalTextAlignment="Center"
+                        Text="Choose file to encrypt!" 
+                        FontSize = "20"/>
+
+                        <HorizontalStackLayout 
+                        Padding = "30,0"
+                        Spacing = "25"
+                        HorizontalOptions="Center">
+
+                            <Button 
+                            BackgroundColor="Gray"
+                            Text = "Choose File"
+                            Command = "{Binding ChooseFileToEncryptCommand}"
+                            />
+
+                            <Button 
+                            Text = "Submit"
+                            Command = "{Binding SubmitFileToEncryptCommand}"/>
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border 
+                StrokeThickness="10"
+                Stroke="OrangeRed"
+                BackgroundColor="Yellow"
+                Padding = "10"
+                StrokeShape="RoundRectangle 12">
+
+                    <VerticalStackLayout
+                    HorizontalOptions = "Center"
+                    Padding = "30,0"
+                    Spacing = "25">
+
+                        <controls:BoldLabel 
+                        HorizontalTextAlignment="Center"
+                        Text="Choose file to decrypt!" 
+                        FontSize = "20"/>
+
+                        <HorizontalStackLayout 
+                        Padding = "30,0"
+                        Spacing = "25"
+                        HorizontalOptions="Center">
+
+                            <Button 
+                            BackgroundColor="Gray"
+                            Text = "Choose File"
+                            Command = "{Binding ChooseFileToDecryptCommand}"
+                            />
+
+                            <Button 
+                            Text = "Submit"
+                            Command = "{Binding SubmitFileToDecryptCommand}"/>
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>
