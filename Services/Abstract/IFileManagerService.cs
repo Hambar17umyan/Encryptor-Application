@@ -7,7 +7,7 @@ using FluentResults;
 
 namespace Encryptor_Application.Services.Abstract
 {
-    public interface IFileManagerService
+    public interface IFileManagerService : IService
     {
         /// <summary>
         /// Asynchronously creates a temporary txt file with the specified data.

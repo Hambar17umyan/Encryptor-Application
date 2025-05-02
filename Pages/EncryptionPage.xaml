@@ -50,6 +50,8 @@
 
                     </VerticalStackLayout>
                 </Border>
+                <Image Source="mangosleep.gif"
+                       IsVisible="{Binding IsMangoSleepVisible}"/>
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

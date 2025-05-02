@@ -10,7 +10,7 @@ namespace Encryptor_Application.Services.Concrete
 {
     public class FileConverterService : IFileConverterService
     {
-        public Result<string> ConvertByteCollectionToFile(IReadOnlyCollection<int> byteCollection, string filePath)
+        public Result<string> ConvertByteCollectionToFile(int[] byteCollection, string filePath)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace Encryptor_Application.Services.Concrete
             }
         }
 
-        public IEnumerable<byte> ConvertFileToByteCollection(string filePath)
+        public byte[] ConvertFileToByteCollection(string filePath)
         {
             if (string.IsNullOrWhiteSpace(filePath)) throw new ArgumentNullException(nameof(filePath));
             if (!File.Exists(filePath)) throw new ArgumentException("File not found.", nameof(filePath));
@@ -36,7 +36,7 @@ namespace Encryptor_Application.Services.Concrete
             return File.ReadAllBytes(filePath);
         }
 
-        public Result<string> TryConvertByteCollectionToFile(IReadOnlyCollection<int> byteCollection, string filePath)
+        public Result<string> TryConvertByteCollectionToFile(int[] byteCollection, string filePath)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace Encryptor_Application.Services.Concrete
             }
         }
 
-        public Result<IEnumerable<byte>> TryConvertFileToByteCollection(string filePath)
+        public Result<byte[]> TryConvertFileToByteCollection(string filePath)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace Encryptor_Application.Services.Concrete
             }
             catch (Exception ex)
             {
-                return Result.Fail<IEnumerable<byte>>(ex.Message);
+                return Result.Fail<byte[]>(ex.Message);
             }
         }
     }

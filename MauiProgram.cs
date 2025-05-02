@@ -32,7 +32,9 @@ public static class MauiProgram
     {
         builder.Services
             .AddSingleton<IEncryptorService, EncryptorService>()
-            .AddSingleton<IFileConverterService, FileConverterService>();
+            .AddSingleton<IFileConverterService, FileConverterService>()
+            .AddSingleton<IFileManagerService, FileManagerService>()
+            .AddSingleton<IStringConverterService, StringConverterService>();
         return builder;
     }
 

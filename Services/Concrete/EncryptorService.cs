@@ -11,26 +11,31 @@ namespace Encryptor_Application.Services.Concrete
 {
     public class EncryptorService : IEncryptorService
     {
-        public IEnumerable<byte> Decrypt(IReadOnlyCollection<int> data)
+        public byte[] Decrypt(int[] data)
         {
             ArgumentNullException.ThrowIfNull(data, nameof(data));
+
+            var result = new byte[data.Length];
+            int i = 0;
             foreach (var item in data)
             {
                 if (!_decryptionKeys.TryGetValue(item, out var decryptedByte))
                 {
                     throw new ArgumentException($"The data is encrypted wrong. The key {item} does not exist.");
                 }
-                yield return decryptedByte;
+                result[i] = decryptedByte;
+                ++i;
             }
+            return result;
         }
 
-        public async Task<IEnumerable<byte>> DecryptAsync(IReadOnlyCollection<int> data)
+        public async Task<byte[]> DecryptAsync(int[] data)
         {
             ArgumentNullException.ThrowIfNull(data, nameof(data));
 
             return await Task.Run(() =>
             {
-                var dataArray = data.ToArray(); // for index access
+                var dataArray = data.ToArray();
                 var result = new byte[dataArray.Length];
                 var error = new ConcurrentQueue<string>();
 
@@ -51,43 +56,48 @@ namespace Encryptor_Application.Services.Concrete
                     throw new ArgumentException(string.Join("\n", error));
                 }
 
-                return (IEnumerable<byte>)result;
+                return result;
             });
         }
 
 
-        public IEnumerable<int> Encrypt(IReadOnlyCollection<byte> data)
+        public int[] Encrypt(byte[] data)
         {
             ArgumentNullException.ThrowIfNull(data, nameof(data));
+            var result = new int[data.Length];
+            int i = 0;
             foreach (var item in data)
             {
-                yield return _encryptionKeys[item];
+                result[i] = _encryptionKeys[item];
+                ++i;
             }
+
+            return result;
         }
 
-        public Result<IEnumerable<byte>> TryDecrypt(IReadOnlyCollection<int> data)
+        public Result<byte[]> TryDecrypt(int[] data)
         {
             if(data is null)
             {
-                return Result.Fail<IEnumerable<byte>>("The data is null!");
+                return Result.Fail<byte[]>("The data is null!");
             }
-            var result = new List<byte>(data.Count);
+            var result = new List<byte>(data.Length);
             foreach (var item in data)
             {
                 if (!_decryptionKeys.TryGetValue(item, out var decryptedByte))
                 {
-                    return Result.Fail<IEnumerable<byte>>($"The data is encrypted wrong. The key {item} does not exist.");
+                    return Result.Fail<byte[]>($"The data is encrypted wrong. The key {item} does not exist.");
                 }
                 result.Add(decryptedByte);
             }
-            return Result.Ok((IEnumerable<byte>)result);
+            return Result.Ok(result.ToArray());
         }
 
-        public async Task<Result<IEnumerable<byte>>> TryDecryptAsync(IReadOnlyCollection<int> data)
+        public async Task<Result<byte[]>> TryDecryptAsync(int[] data)
         {
             if (data is null)
             {
-                return Result.Fail<IEnumerable<byte>>("The data is null!");
+                return Result.Fail<byte[]>("The data is null!");
             }
 
             return await Task.Run(() =>
@@ -110,20 +120,20 @@ namespace Encryptor_Application.Services.Concrete
 
                 if (!error.IsEmpty)
                 {
-                    return Result.Fail<IEnumerable<byte>>(string.Join("\n", error));
+                    return Result.Fail<byte[]>(string.Join("\n", error));
                 }
 
-                return Result.Ok((IEnumerable<byte>)result);
+                return Result.Ok(result);
             });
         }
 
-        public async Task<IEnumerable<int>> EncryptAsync(IReadOnlyCollection<byte> data)
+        public async Task<int[]> EncryptAsync(byte[] data)
         {
             ArgumentNullException.ThrowIfNull(data, nameof(data));
 
             return await Task.Run(() =>
             {
-                var dataArray = data.ToArray(); // Ensure index access
+                var dataArray = data.ToArray();
                 var result = new int[dataArray.Length];
 
                 Parallel.For(0, dataArray.Length, i =>
@@ -131,7 +141,7 @@ namespace Encryptor_Application.Services.Concrete
                     result[i] = _encryptionKeys[dataArray[i]];
                 });
 
-                return (IEnumerable<int>)result;
+                return result;
             });
         }
 

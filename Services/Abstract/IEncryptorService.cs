@@ -15,7 +15,7 @@ namespace Encryptor_Application.Services.Abstract
         /// <param name="data">Data to be encrypted</param>
         /// <returns>Encrypted data.</returns>
         /// <exception cref="ArgumentNullException">Thrown when data is null.</exception>
-        IEnumerable<int> Encrypt(IReadOnlyCollection<byte> data);
+        int[] Encrypt(byte[] data);
 
         /// <summary>
         /// Decrypts the given data using a specific algorithm.
@@ -24,14 +24,14 @@ namespace Encryptor_Application.Services.Abstract
         /// <returns>The decrypted data.</returns>
         /// <exception cref="ArgumentException">Thrown when the data is encrypted wrong</exception>"
         /// <exception cref="ArgumentNullException">Thrown when data is null.</exception>
-        IEnumerable<byte> Decrypt(IReadOnlyCollection<int> data);
+        byte[] Decrypt(int[] data);
 
         /// <summary>
         /// Tries to decrypt the given data using a specific algorithm.
         /// </summary>
         /// <param name="data">Data to be decrypted</param>
         /// <returns>The decrypted data coupled in a Result.</returns>
-        Result<IEnumerable<byte>> TryDecrypt(IReadOnlyCollection<int> data);
+        Result<byte[]> TryDecrypt(int[] data);
 
         /// <summary>
         /// Encrypts the given data asynchronously using a specific algorithm.
@@ -39,7 +39,7 @@ namespace Encryptor_Application.Services.Abstract
         /// <param name="data">Data to be encrypted</param>
         /// <returns>Encrypted data coupled in task.</returns>
         /// <exception cref="ArgumentNullException">Thrown when data is null.</exception>
-        Task<IEnumerable<int>> EncryptAsync(IReadOnlyCollection<byte> data);
+        Task<int[]> EncryptAsync(byte[] data);
 
         /// <summary>
         /// Decrypts the given data asynchronously using a specific algorithm.
@@ -48,13 +48,13 @@ namespace Encryptor_Application.Services.Abstract
         /// <returns>The decrypted data coupled in task.</returns>
         /// <exception cref="ArgumentException">Thrown when the data is encrypted wrong.</exception>"
         /// <exception cref="ArgumentNullException">Thrown when data is null.</exception>
-        Task<IEnumerable<byte>> DecryptAsync(IReadOnlyCollection<int> data);
+        Task<byte[]> DecryptAsync(int[] data);
 
         /// <summary>
         /// Tries to decrypt the given data asynchronously using a specific algorithm.
         /// </summary>
         /// <param name="data">Data to be decrypted</param>
         /// <returns>The decrypted data coupled in a Result and Tak.</returns>
-        Task<Result<IEnumerable<byte>>> TryDecryptAsync(IReadOnlyCollection<int> data);
+        Task<Result<byte[]>> TryDecryptAsync(int[] data);
     }
 }

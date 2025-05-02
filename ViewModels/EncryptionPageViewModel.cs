@@ -8,16 +8,48 @@ namespace Encryptor_Application.ViewModels
 {
     public partial class EncryptionPageViewModel : ObservableObject
     {
-        public EncryptionPageViewModel(IFileConverterService fileConverterService, IEncryptorService encryptorService)
+        public EncryptionPageViewModel(IFileConverterService fileConverterService, IEncryptorService encryptorService, IFileManagerService fileManagerService, IStringConverterService stringConverterService)
         {
             _fileConverterService = fileConverterService;
             _encryptorService = encryptorService;
+            _fileManagerService = fileManagerService;
+            _stringConverterService = stringConverterService;
+            IsMangoSleepVisible = false;
         }
+
+        public bool IsMangoSleepVisible { get; set; }
+
         [RelayCommand]
-        public Task SubmitFileToEncrypt()
+        public async Task SubmitFileToEncrypt()
         {
-            // Logic to submit file for encryption
-            return Task.CompletedTask;
+            if (_dataToEncrypt == null)
+            {
+                Shell.Current.DisplayAlert(Shell.Current.Title, "Please select a file to encrypt.", "OK").Wait();
+                return;
+            }
+
+            var encryptedTask = _encryptorService.EncryptAsync(_dataToEncrypt);
+            IsMangoSleepVisible = true;
+
+            var result = await encryptedTask;
+            var line = _stringConverterService.CreateStringFromIntCollection(result);
+            var tempFileResult = await _fileManagerService.TryCreateTempTxtFileAsync(line);
+            if (tempFileResult.IsSuccess)
+            {
+                var res = await _fileManagerService.SaveFileToUserLocationAsync(tempFileResult.Value);
+                if (res.IsSuccess)
+                {
+                    Shell.Current.DisplayAlert(Shell.Current.Title, "File saved successfully.", "OK").Wait();
+                }
+                else
+                {
+                    Shell.Current.DisplayAlert(Shell.Current.Title, res.Errors[0].Message, "OK").Wait();
+                }
+            }
+            else
+            {
+                Shell.Current.DisplayAlert(Shell.Current.Title, tempFileResult.Errors[0].Message, "OK").Wait();
+            }
         }
 
         [RelayCommand]
@@ -40,14 +72,14 @@ namespace Encryptor_Application.ViewModels
             }
             catch (Exception ex)
             {
-                // Handle any exceptions like permission denied, user cancel, etc.
                 await Shell.Current.DisplayAlert("Error", $"Failed to pick file: {ex.Message}", "OK");
             }
         }
 
         private readonly IFileConverterService _fileConverterService;
         private readonly IEncryptorService _encryptorService;
-
+        private readonly IFileManagerService _fileManagerService;
+        private readonly IStringConverterService _stringConverterService;
         private byte[]? _dataToEncrypt;
     }
 }
