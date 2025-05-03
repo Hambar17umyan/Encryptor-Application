@@ -34,7 +34,7 @@ namespace Encryptor_Application.Services.Concrete
             StringBuilder stringBuilder = new StringBuilder();
             foreach (var intValue in intCollection)
             {
-                stringBuilder.Append((char)intValue);
+                stringBuilder.Append($"{intValue}");
                 stringBuilder.Append(' ');
             }
             return stringBuilder.ToString();

@@ -22,5 +22,12 @@ namespace Encryptor_Application.Services.Abstract
         /// <param name="tempFilePath">The path of file which should be saved.</param>
         /// <returns>Result coupled in Task.</returns>
         Task<Result> SaveFileToUserLocationAsync(string tempFilePath);
+
+        /// <summary>
+        /// Deletes all files from a directory.
+        /// </summary>
+        /// <param name="directory">The directory.</param>
+        /// <returns>The result of the process.</returns>
+        Result RemoveFilesFromDirectory(string directory);
     }
 }

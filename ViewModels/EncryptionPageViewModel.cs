@@ -1,54 +1,135 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Encryptor_Application.Controls;
+using Encryptor_Application.Enums;
 using Encryptor_Application.Services.Abstract;
 using FluentResults;
 
 namespace Encryptor_Application.ViewModels
 {
-    public partial class EncryptionPageViewModel : ObservableObject
+    public partial class EncryptionPageViewModel : ApplicationViewModel
     {
         public EncryptionPageViewModel(IFileConverterService fileConverterService, IEncryptorService encryptorService, IFileManagerService fileManagerService, IStringConverterService stringConverterService)
         {
-            _fileConverterService = fileConverterService;
-            _encryptorService = encryptorService;
-            _fileManagerService = fileManagerService;
-            _stringConverterService = stringConverterService;
-            IsMangoSleepVisible = false;
+            this._fileConverterService = fileConverterService;
+            this._encryptorService = encryptorService;
+            this._fileManagerService = fileManagerService;
+            this._stringConverterService = stringConverterService;
+
+            this.LoadingStackIsVisible = false;
+            this.SubmitFileToEncryptButtonIsEnabled = true;
+            this.ChooseFileToEncryptButtonIsEnabled = true;
         }
 
-        public bool IsMangoSleepVisible { get; set; }
+        public bool LoadingStackIsVisible
+        {
+            get => this._loadingStackIsVisible;
+            set
+            {
+                if (_loadingStackIsVisible != value)
+                {
+                    this._loadingStackIsVisible = value;
+                    this.OnPropertyChanged(nameof(LoadingStackIsVisible));
+                }
+            }
+        }
+        public bool SubmitFileToEncryptButtonIsEnabled
+        {
+            get => _submitFileToEncryptButtonIsEnabled;
+            set
+            {
+                if(value!=_submitFileToEncryptButtonIsEnabled)
+                {
+                    _submitFileToEncryptButtonIsEnabled = value;
+                    OnPropertyChanged(nameof(SubmitFileToEncryptButtonIsEnabled));
+                }
+            }
+        }
+        public bool ChooseFileToEncryptButtonIsEnabled
+        {
+            get => _chooseFileToEncryptButtonIsEnabled;
+            set
+            {
+                if (value != _chooseFileToEncryptButtonIsEnabled)
+                {
+                    _chooseFileToEncryptButtonIsEnabled = value;
+                    OnPropertyChanged(nameof(ChooseFileToEncryptButtonIsEnabled));
+                }
+            }
+        }
 
         [RelayCommand]
         public async Task SubmitFileToEncrypt()
         {
-            if (_dataToEncrypt == null)
+            this.SubmitFileToEncryptButtonIsEnabled = false;
+            this.ChooseFileToEncryptButtonIsEnabled = false;
+
+            if (this._dataToEncrypt == null)
             {
-                Shell.Current.DisplayAlert(Shell.Current.Title, "Please select a file to encrypt.", "OK").Wait();
+                await this.ThrowError("Error", "Please select a file to encrypt.", "OK", ApplicationError.FileNotSelectedToEncrypt);
                 return;
             }
 
-            var encryptedTask = _encryptorService.EncryptAsync(_dataToEncrypt);
-            IsMangoSleepVisible = true;
+            this.LoadingStackIsVisible = true;
+            int[] result;
+            try
+            {
+                var encryptedTask = this._encryptorService.EncryptAsync(this._dataToEncrypt);
+                result = await encryptedTask;
+            }
+            catch (Exception)
+            {
+                this.LoadingStackIsVisible = false;
+                await this.ThrowError("Error", "An internal error has occurred. Try again!", "OK", ApplicationError.DataToEncryptIsNull);
+                return;
+            }
 
-            var result = await encryptedTask;
-            var line = _stringConverterService.CreateStringFromIntCollection(result);
-            var tempFileResult = await _fileManagerService.TryCreateTempTxtFileAsync(line);
+            string text;
+            try
+            {
+                text = this._stringConverterService.CreateStringFromIntCollection(result);
+            }
+            catch (Exception)
+            {
+                this.LoadingStackIsVisible = false;
+                await this.ThrowError("Error", "An internal error has occurred. Try again!", "OK", ApplicationError.DataToEncryptIsNull);
+                return;
+            }
+
+            var tempFileResult = await _fileManagerService.TryCreateTempTxtFileAsync(text);
             if (tempFileResult.IsSuccess)
             {
-                var res = await _fileManagerService.SaveFileToUserLocationAsync(tempFileResult.Value);
-                if (res.IsSuccess)
+                var tempPath = tempFileResult.Value;
+                if (tempPath is null)
                 {
-                    Shell.Current.DisplayAlert(Shell.Current.Title, "File saved successfully.", "OK").Wait();
+                    this.LoadingStackIsVisible = false;
+                    await this.ThrowError("Error", "An internal error has occurred. Try again!", "OK", ApplicationError.EncTempPathIsNull);
+                    return;
                 }
-                else
+                try
                 {
-                    Shell.Current.DisplayAlert(Shell.Current.Title, res.Errors[0].Message, "OK").Wait();
+                    this.LoadingStackIsVisible = false;
+                    await Share.Default.RequestAsync(new ShareFileRequest
+                    {
+                        Title = "Share your text file",
+                        File = new ShareFile(tempPath)
+                    });
+
                 }
+                catch (Exception)
+                {
+                    this.LoadingStackIsVisible = false;
+                    await this.ThrowError("Error", "An internal error has occurred. Try again!", "OK", ApplicationError.EncLauncherError);
+                    return;
+                }
+
+                Reset();
             }
             else
             {
-                Shell.Current.DisplayAlert(Shell.Current.Title, tempFileResult.Errors[0].Message, "OK").Wait();
+                this.LoadingStackIsVisible = false;
+                await this.ThrowError("Error", "An internal error has occurred. Try again!", "OK", ApplicationError.EncTempFileResultIsFail);
+                return;
             }
         }
 
@@ -70,9 +151,9 @@ namespace Encryptor_Application.ViewModels
                     _dataToEncrypt = memoryStream.ToArray();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                await Shell.Current.DisplayAlert("Error", $"Failed to pick file: {ex.Message}", "OK");
+                await this.ThrowError("Error", $"Failed to pick file.", "OK", ApplicationError.EnFailToPickFile);
             }
         }
 
@@ -81,5 +162,15 @@ namespace Encryptor_Application.ViewModels
         private readonly IFileManagerService _fileManagerService;
         private readonly IStringConverterService _stringConverterService;
         private byte[]? _dataToEncrypt;
+        private bool _loadingStackIsVisible;
+        private bool _submitFileToEncryptButtonIsEnabled;
+        private bool _chooseFileToEncryptButtonIsEnabled;
+
+        protected override void Reset()
+        {
+            this._dataToEncrypt = null;
+            this.SubmitFileToEncryptButtonIsEnabled = true;
+            this.ChooseFileToEncryptButtonIsEnabled = true;
+        }
     }
 }

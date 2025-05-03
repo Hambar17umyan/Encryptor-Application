@@ -9,5 +9,6 @@ public partial class EncryptionPage : ContentPage
 	{
 		InitializeComponent();
         BindingContext = viewModel;
+		viewModel.BindingPage = this;
     }
 }

@@ -10,7 +10,7 @@ namespace Encryptor_Application.Services.Concrete
 {
     public class FileConverterService : IFileConverterService
     {
-        public Result<string> ConvertByteCollectionToFile(int[] byteCollection, string filePath)
+        public Result<string> ConvertByteCollectionToFile(byte[] byteCollection, string filePath)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace Encryptor_Application.Services.Concrete
             return File.ReadAllBytes(filePath);
         }
 
-        public Result<string> TryConvertByteCollectionToFile(int[] byteCollection, string filePath)
+        public Result<string> TryConvertByteCollectionToFile(byte[] byteCollection, string filePath)
         {
             try
             {

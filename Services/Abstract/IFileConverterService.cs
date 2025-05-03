@@ -35,7 +35,7 @@ namespace Encryptor_Application.Services.Abstract
         /// <exception cref="ArgumentNullException">Thrown when byteCollection is null.</exception>
         /// <exception cref="ArgumentNullException">Thrown when filePath is null.</exception>
         /// <exception cref="ArgumentException">Thrown when filePath is invalid.</exception>
-        Result<string> ConvertByteCollectionToFile(int[] byteCollection, string filePath);
+        Result<string> ConvertByteCollectionToFile(byte[] byteCollection, string filePath);
 
         /// <summary>
         /// Tries to convert a byte collection to a file.
@@ -43,6 +43,6 @@ namespace Encryptor_Application.Services.Abstract
         /// <param name="byteCollection">Byte collection</param>
         /// <param name="filePath">File path</param>
         /// <returns>File path coupled in Result.</returns>
-        Result<string> TryConvertByteCollectionToFile(int[] byteCollection, string filePath);
+        Result<string> TryConvertByteCollectionToFile(byte[] byteCollection, string filePath);
     }
 }

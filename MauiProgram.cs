@@ -1,4 +1,5 @@
-﻿using Encryptor_Application.Pages;
+﻿using CommunityToolkit.Maui;
+using Encryptor_Application.Pages;
 using Encryptor_Application.Services.Abstract;
 using Encryptor_Application.Services.Concrete;
 using Encryptor_Application.ViewModels;
@@ -17,7 +18,8 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-            });
+            })
+        .UseMauiCommunityToolkit();
 
 #if DEBUG
         builder.Logging.AddDebug();
@@ -41,9 +43,9 @@ public static class MauiProgram
     private static MauiAppBuilder InjectPages(this MauiAppBuilder builder)
     {
         builder.Services
-            .AddScoped<MainPage>()
-            .AddScoped<EncryptionPage>()
-            .AddScoped<DecryptionPage>();
+            .AddTransient<MainPage>()
+            .AddTransient<EncryptionPage>()
+            .AddTransient<DecryptionPage>();
 
         return builder;
     }

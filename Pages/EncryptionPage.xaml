@@ -4,17 +4,21 @@
              x:Class="Encryptor_Application.Pages.EncryptionPage"
              xmlns:controls="clr-namespace:Encryptor_Application.Controls"
              xmlns:viewModels = "clr-namespace:Encryptor_Application.ViewModels"
+             xmlns:toolkit ="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="EncryptionPage"
              x:DataType="viewModels:EncryptionPageViewModel">
     <Grid>
-        <Image Source="mango.jpg"
+
+        <Image Source="mangocrypt.png"
            Aspect="AspectFill"
         IsVisible="True" />
 
         <ScrollView>
+            
             <VerticalStackLayout 
                 Padding="10"
                 Spacing="10">
+                
                 <Border 
                     StrokeThickness="10"
                     Stroke="Green"
@@ -41,17 +45,35 @@
                             <Button 
                                 BackgroundColor="Gray"
                                 Text = "Choose File"
-                                Command = "{Binding ChooseFileToEncryptCommand}"/>
+                                Command = "{Binding ChooseFileToEncryptCommand}"
+                                IsEnabled="{Binding ChooseFileToEncryptButtonIsEnabled}"/>
 
                             <Button 
                                 Text = "Submit"
-                                Command = "{Binding SubmitFileToEncryptCommand}"/>
+                                Command = "{Binding SubmitFileToEncryptCommand}"
+                                IsEnabled="{Binding SubmitFileToEncryptButtonIsEnabled}"/>
+
+                        </HorizontalStackLayout>
+                        
+                        <HorizontalStackLayout 
+                            HorizontalOptions="Center" 
+                            IsVisible="{Binding LoadingStackIsVisible}">
+
+                            <controls:BoldLabel
+                            Text="Loading..."
+                            HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                            />
+
+                            <WebView HorizontalOptions="Center" WidthRequest="50" HeightRequest="50">
+                                <WebView.Source>
+                                    <HtmlWebViewSource Html="&lt;html>&lt;body style='margin:0;padding:0;background-color:LightGreen;'>&lt;img src='mangodance.gif' style='width:40;height:auto;' />&lt;/body>&lt;/html>" />
+                                </WebView.Source>
+                            </WebView>
                         </HorizontalStackLayout>
 
                     </VerticalStackLayout>
                 </Border>
-                <Image Source="mangosleep.gif"
-                       IsVisible="{Binding IsMangoSleepVisible}"/>
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

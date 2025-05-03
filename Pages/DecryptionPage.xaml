@@ -7,45 +7,67 @@
              Title="DecryptionPage"
              x:DataType="viewModels:DecryptionPageViewModel">
     <Grid>
-        <Image Source="mango.jpg"
-       Aspect="AspectFill"
-    IsVisible="True" />
+
+        <Image Source="mangocrypt.png"
+            Aspect="AspectFill"
+            IsVisible="True" />
 
         <ScrollView>
+
             <VerticalStackLayout 
-            Padding="10"
-            Spacing="10">
+                Padding="10"
+                Spacing="10">
+
                 <Border 
-                StrokeThickness="10"
-                Stroke="Green"
-                BackgroundColor="LightGreen"
-                Padding = "10"
-                StrokeShape="RoundRectangle 12">
+                    StrokeThickness="10"
+                    Stroke="Green"
+                    BackgroundColor="LightGreen"
+                    Padding = "10"
+                    StrokeShape="RoundRectangle 12">
 
                     <VerticalStackLayout
-                    HorizontalOptions = "Center"
-                    Padding = "30,0"
-                    Spacing = "25">
+                        HorizontalOptions = "Center"
+                        Padding = "30,0"
+                        Spacing = "25">
 
 
                         <controls:BoldLabel 
-                        HorizontalTextAlignment="Center"
-                        Text="Choose file to decrypt!" 
-                        FontSize = "20"/>
+                            HorizontalTextAlignment="Center"
+                            Text="Choose txt file to decrypt!" 
+                            FontSize = "20"/>
 
                         <HorizontalStackLayout 
-                        Padding = "30,0"
-                        Spacing = "25"
-                        HorizontalOptions="Center">
+                            Padding = "30,0"
+                            Spacing = "25"
+                            HorizontalOptions="Center">
 
                             <Button 
-                            BackgroundColor="Gray"
-                            Text = "Choose File"
-                            Command = "{Binding ChooseFileToDecryptCommand}"/>
+                                BackgroundColor="Gray"
+                                Text = "Choose File"
+                                Command = "{Binding ChooseFileToDecryptCommand}"
+                                IsEnabled="{Binding ChooseFileToDecryptButtonIsEnabled}"/>
 
                             <Button 
-                            Text = "Submit"
-                            Command = "{Binding SubmitFileToDecryptCommand}"/>
+                                Text = "Submit"
+                                Command = "{Binding SubmitFileToDecryptCommand}"
+                                IsEnabled="{Binding SubmitFileToDecryptButtonIsEnabled}"/>
+
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout 
+                            HorizontalOptions="Center" 
+                            IsVisible="{Binding LoadingStackIsVisible}">
+
+                            <controls:BoldLabel
+                                Text="Loading..."
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"/>
+
+                            <WebView HorizontalOptions="Center" WidthRequest="50" HeightRequest="50">
+                                <WebView.Source>
+                                    <HtmlWebViewSource Html="&lt;html>&lt;body style='margin:0;padding:0;background-color:LightGreen;'>&lt;img src='mangodance.gif' style='width:40;height:auto;' />&lt;/body>&lt;/html>" />
+                                </WebView.Source>
+                            </WebView>
                         </HorizontalStackLayout>
 
                     </VerticalStackLayout>

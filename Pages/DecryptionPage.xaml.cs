@@ -8,5 +8,6 @@ public partial class DecryptionPage : ContentPage
 	{
 		InitializeComponent();
         BindingContext = viewModel;
+		viewModel.BindingPage = this;
     }
 }

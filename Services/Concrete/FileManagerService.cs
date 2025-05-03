@@ -10,8 +10,32 @@ namespace Encryptor_Application.Services.Concrete
 {
     public class FileManagerService : IFileManagerService
     {
+        public Result RemoveFilesFromDirectory(string directory)
+        {
+            if (Directory.Exists(directory))
+            {
+                foreach (var file in Directory.GetFiles(directory))
+                {
+                    File.Delete(file);
+                }
+            }
+            else
+            {
+                return Result.Fail("Some error occurred!");
+            }
+
+            var cnt = Directory.GetFiles(directory).Length;
+            if (cnt != 0)
+            {
+                return Result.Fail("Some error occurred!");
+            }
+
+            return Result.Ok();
+        }
+
         public async Task<Result> SaveFileToUserLocationAsync(string tempFilePath)
         {
+            tempFilePath = @"C:\Users\hamba\AppData\Local\User Name\com.companyname.encryptorapplication\Cache\TempData.txt";
             if (string.IsNullOrEmpty(tempFilePath) || !File.Exists(tempFilePath))
             {
                 return Result.Fail("Temporary file not found.");

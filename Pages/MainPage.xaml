@@ -6,85 +6,58 @@
              x:DataType="viewModels:MainPageViewModel">
 
     <Grid>
-        <Image Source="mango.jpg"
+        <Image Source="mangocrypt.jpg"
                Aspect="AspectFill"
-            IsVisible="True" />
+               IsVisible="True" />
 
         <ScrollView>
             <VerticalStackLayout 
-            Padding="10"
-            Spacing="10">
+                Padding="18">
                 <Border 
-                StrokeThickness="10"
-                Stroke="Green"
-                BackgroundColor="LightGreen"
-                Padding = "10"
-                StrokeShape="RoundRectangle 12">
+                    BackgroundColor="DarkSlateGrey"
+                    StrokeThickness="5"
+                    StrokeShape="RoundRectangle 30">
+                    <AbsoluteLayout VerticalOptions="Start">
+                        <controls:BoldLabel
+                    FontSize="40"
+                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
+                    Text="Mango Encryptor"
+                    TextColor="DimGray"
+                    FontAttributes="Bold"
+                    AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    TranslationX="2" TranslationY="0"/>
 
-                    <VerticalStackLayout
-                    HorizontalOptions = "Center"
-                    Padding = "30,0"
-                    Spacing = "25">
+                        <controls:BoldLabel
+                    FontSize="40"
+                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
+                    Text="Mango Encryptor"
+                    TextColor="Black"
+                    AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    TranslationX="-2" TranslationY="0"/>
 
+                        <controls:BoldLabel
+                    FontSize="40"
+                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
+                    Text="Mango Encryptor"
+                    TextColor="Orange"
+                    AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"/>
 
-                        <controls:BoldLabel 
-                        HorizontalTextAlignment="Center"
-                        Text="Choose file to encrypt!" 
-                        FontSize = "20"/>
-
-                        <HorizontalStackLayout 
-                        Padding = "30,0"
-                        Spacing = "25"
-                        HorizontalOptions="Center">
-
-                            <Button 
-                            BackgroundColor="Gray"
-                            Text = "Choose File"
-                            Command = "{Binding ChooseFileToEncryptCommand}"
-                            />
-
-                            <Button 
-                            Text = "Submit"
-                            Command = "{Binding SubmitFileToEncryptCommand}"/>
-                        </HorizontalStackLayout>
-
-                    </VerticalStackLayout>
-                </Border>
-
-                <Border 
-                StrokeThickness="10"
-                Stroke="OrangeRed"
-                BackgroundColor="Yellow"
-                Padding = "10"
-                StrokeShape="RoundRectangle 12">
-
-                    <VerticalStackLayout
-                    HorizontalOptions = "Center"
-                    Padding = "30,0"
-                    Spacing = "25">
-
-                        <controls:BoldLabel 
-                        HorizontalTextAlignment="Center"
-                        Text="Choose file to decrypt!" 
-                        FontSize = "20"/>
-
-                        <HorizontalStackLayout 
-                        Padding = "30,0"
-                        Spacing = "25"
-                        HorizontalOptions="Center">
-
-                            <Button 
-                            BackgroundColor="Gray"
-                            Text = "Choose File"
-                            Command = "{Binding ChooseFileToDecryptCommand}"
-                            />
-
-                            <Button 
-                            Text = "Submit"
-                            Command = "{Binding SubmitFileToDecryptCommand}"/>
-                        </HorizontalStackLayout>
-
-                    </VerticalStackLayout>
+                        <controls:BoldLabel
+                    FontSize="40"
+                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center"
+                    Text="Mango Encryptor"
+                    TextColor="OrangeRed"
+                    AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    TranslationX="0" TranslationY="-2"/>
+                    </AbsoluteLayout>
                 </Border>
             </VerticalStackLayout>
         </ScrollView>
